@@ -147,26 +147,34 @@ def final_evaluation(X_train, y_train, X_test, y_test, best_params):
     """Train with best hyperparameters, evaluate on held-out test set ONCE.
     
     Returns:
-        test_rmse, test_acc, y_pred, model
+        train_rmse, train_acc, test_rmse, test_acc, y_pred, model
     """
     print("\n[XGB-3] Final evaluation on test set (2023-2025)...")
     model = _make_model(**best_params)
     model.fit(X_train, y_train)
+    
+    # Training set evaluation
+    y_train_pred = model.predict(X_train)
+    train_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
+    train_acc = anomaly_correlation(y_train, y_train_pred)
+    
+    # Test set evaluation
     y_pred = model.predict(X_test)
-
     test_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     test_acc = anomaly_correlation(y_test, y_pred)
 
+    print(f"         Train RMSE: {train_rmse:.4f} (raw Niño 3.4 units)")
+    print(f"         Train ACC:  {train_acc:.4f}")
     print(f"         Test RMSE: {test_rmse:.4f} (raw Niño 3.4 units)")
     print(f"         Test ACC:  {test_acc:.4f}")
 
-    return test_rmse, test_acc, y_pred, model
+    return train_rmse, train_acc, test_rmse, test_acc, y_pred, model
 
 
 # ─── Step 4: Save everything ────────────────────────────────────────────────
 
 def save_results(best_params, best_k, feature_names, grid_results,
-                 test_rmse, test_acc, y_test, y_pred, times_test,
+                 train_rmse, train_acc, test_rmse, test_acc, y_test, y_pred, times_test,
                  model, output_dir=OUTPUT_DIR):
     """Save hyperparameters, metrics, predictions, grid search results,
     the trained model, and a full history dict for later exploration."""
@@ -197,6 +205,8 @@ def save_results(best_params, best_k, feature_names, grid_results,
         "model": "XGBRegressor" if HAS_XGBOOST else "HistGradientBoostingRegressor",
         "best_k": best_k,
         "best_params": best_params,
+        "train_rmse": round(train_rmse, 4),
+        "train_acc": round(train_acc, 4),
         "test_rmse": round(test_rmse, 4),
         "test_acc": round(test_acc, 4),
         "selected_features": feature_names,
@@ -242,13 +252,13 @@ def run_xgboost_baseline(splits):
 
     best_params, grid_results = grid_search(X_train, y_train, X_val, y_val)
 
-    test_rmse, test_acc, y_pred, model = \
+    train_rmse, train_acc, test_rmse, test_acc, y_pred, model = \
         final_evaluation(X_train, y_train, X_test, y_test, best_params)
 
     times_test = splits["test"][2]
     summary = save_results(
         best_params, best_k, feature_names, grid_results,
-        test_rmse, test_acc, y_test, y_pred, times_test,
+        train_rmse, train_acc, test_rmse, test_acc, y_test, y_pred, times_test,
         model=model,
     )
 
@@ -259,6 +269,8 @@ def run_xgboost_baseline(splits):
     print(f"  Model:          {summary['model']}")
     print(f"  Features (K):   {best_k}")
     print(f"  Best params:    {best_params}")
+    print(f"  Train RMSE:     {train_rmse:.4f}")
+    print(f"  Train ACC:      {train_acc:.4f}")
     print(f"  Test RMSE:      {test_rmse:.4f}")
     print(f"  Test ACC:       {test_acc:.4f}")
     print("=" * 60)
