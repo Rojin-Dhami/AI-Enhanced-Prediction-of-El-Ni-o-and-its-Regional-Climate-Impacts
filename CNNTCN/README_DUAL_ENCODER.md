@@ -13,7 +13,7 @@ This architecture provides more accurate South Asian precipitation and temperatu
 
 ```
 ┌─────────────────┐
-│ Pacific Input   │ (12, 30, 100, 6)
+│ Pacific Input   │ (12, 31, 81, 6)
 │ - SST anom      │   ↓ CNN (Pacific)
 │ - MSL anom      │   ↓
 │ - Wind E-W      │ (12, 64) features
@@ -72,7 +72,7 @@ This creates: `data/ERA5_single_levels_southasia/era5_southasia_with_precip_1980
 
 You'll need to create a data pipeline script that:
 
-1. **Pacific tensor** `X_pacific.npy`: (N, 12, 30, 100, 6)
+1. **Pacific tensor** `X_pacific.npy`: (N, 12, 31, 81, 6)
    - Load from `data/combined_era5_oras5.csv`
    - Channels: `sst_anom_z`, `msl_anom_z`, `avg_iews_anom_z`, `avg_inss_anom_z`, `sohtc300_anom_z`, `so20chgt_anom_z`
    - Domain: tropical Pacific

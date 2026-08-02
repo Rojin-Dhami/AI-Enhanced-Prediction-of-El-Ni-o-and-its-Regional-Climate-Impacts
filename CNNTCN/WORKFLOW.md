@@ -50,7 +50,7 @@
 - `sohtc300_anom_z` - Ocean heat content 0-300m (ORAS5)
 - `so20chgt_anom_z` - 20°C isotherm depth / thermocline depth (ORAS5)
 
-**Domain:** 30°S-30°N, 120°E-80°W, 2°×2° grid (30 lat × 100 lon = 3,000 cells)
+**Domain:** 30°S-30°N, 120°E-80°W, 2°×2° grid (31 lat × 81 lon = 2,511 cells)
 
 **Time Range:** 1980-01 to 2025-12 (552 months)
 
@@ -66,7 +66,7 @@
 - `avg_iews_anom_z` - East-West wind stress anomaly
 - `avg_inss_anom_z` - North-South wind stress anomaly
 
-**Domain:** 5°N-40°N, 60°E-100°E, 2°×2° grid (18 lat × 21 lon = 378 cells)
+**Domain:** 5°N-39°N, 60°E-100°E, 2°×2° grid (18 lat × 21 lon = 378 cells)
 
 **Time Range:** 1980-01 to 2025-12 (552 months)
 
@@ -108,7 +108,7 @@ Transform CSV files into 5D tensors for model training.
 
 ### 2.3 Output Tensors
 ```
-/Users/raman/Elnino/CNNTCN/tensors/X_pacific.npy         # Shape: (N, 12, 30, 100, 6)
+/Users/raman/Elnino/CNNTCN/tensors/X_pacific.npy         # Shape: (N, 12, 31, 81, 6)
 /Users/raman/Elnino/CNNTCN/tensors/X_sa.npy              # Shape: (N, 12, 18, 21, 5)
 /Users/raman/Elnino/CNNTCN/tensors/y_enso.npy            # Shape: (N,)
 /Users/raman/Elnino/CNNTCN/tensors/y_impact.npy          # Shape: (N, 2, 378)
@@ -459,7 +459,7 @@ Loaded South Asia data: 552 months × 378 cells × 5 channels
 Loaded ENSO index: 552 months
 
 Created 540 training samples:
-  X_pacific: (540, 12, 30, 100, 6)
+  X_pacific: (540, 12, 31, 81, 6)
   X_sa: (540, 12, 18, 21, 5)
   y_enso: (540,)
   y_impact: (540, 2, 378)

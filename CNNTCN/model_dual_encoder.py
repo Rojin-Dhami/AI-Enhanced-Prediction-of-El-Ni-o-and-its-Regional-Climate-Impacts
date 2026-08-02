@@ -4,7 +4,7 @@ Dual-Encoder CNN-TCN hybrid model for ENSO forecasting + South Asian climate imp
 UPDATED ARCHITECTURE with separate encoders for Pacific and South Asia:
   
   Stage 1a: Pacific Spatial Encoder (CNN) - 2D conv on tropical Pacific data
-    Input per month: (B, 6, 30, 100) -> SST, MSL, wind E-W, wind N-S, OHC, thermocline
+    Input per month: (B, 6, 31, 81) -> SST, MSL, wind E-W, wind N-S, OHC, thermocline
     Output per month: (B, d_pacific)
     
   Stage 1b: South Asia Spatial Encoder (CNN) - 2D conv on South Asia data  
@@ -34,10 +34,10 @@ import torch.nn.functional as F
 # ---------------------------------------------------------------------------
 class PacificSpatialEncoder(nn.Module):
     """
-    2D CNN for tropical Pacific (30×100 grid, 6 channels).
+    2D CNN for tropical Pacific (31×81 grid, 6 channels).
     Applied independently to each monthly snapshot with shared weights.
     
-    Input per snapshot:  (B, C=6, H=30, W=100)
+    Input per snapshot:  (B, C=6, H=31, W=81)
       - SST anomaly
       - MSL anomaly  
       - Wind stress E-W
@@ -69,7 +69,7 @@ class PacificSpatialEncoder(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x: (B, C=4, H=30, W=100)
+        # x: (B, C=6, H=31, W=81)
         x = self.block1(x)   # -> (B, 16, 15, 50)
         x = self.block2(x)   # -> (B, 32, 7, 25)
         x = self.block3(x)   # -> (B, 64, 3, 12)
@@ -219,7 +219,7 @@ class TemporalEncoderTCN(nn.Module):
 class DualEncoderCNNTCN(nn.Module):
     """
     Full dual-encoder pipeline:
-      Pacific input:  (B, T=12, H_pac=30, W_pac=100, C_pac=4)
+      Pacific input:  (B, T=12, H_pac=31, W_pac=81, C_pac=6)
       SA input:       (B, T=12, H_sa=18, W_sa=21, C_sa=5)
         --Pacific CNN--> (B, T, d_pac)
         --SA CNN-->      (B, T, d_sa)
@@ -337,7 +337,7 @@ if __name__ == "__main__":
     )
     
     # Dummy inputs
-    x_pacific = torch.randn(8, 12, 30, 100, 6)  # batch of 8, Pacific
+    x_pacific = torch.randn(8, 12, 31, 81, 6)  # batch of 8, Pacific
     x_sa = torch.randn(8, 12, 18, 21, 5)        # batch of 8, South Asia
     
     y_enso, y_impact = model(x_pacific, x_sa)
