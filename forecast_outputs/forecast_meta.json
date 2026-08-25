@@ -1,0 +1,47 @@
+{
+  "generated": "2026-08-26T00:25:02",
+  "target_months_requested": [
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "reachable": [
+    "2026-06",
+    "2026-07",
+    "2026-08"
+  ],
+  "skipped": [
+    "Sep 2026"
+  ],
+  "season_label": "JJA",
+  "n_members": 5,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "pac_data_max": "2026-05-01",
+  "lead_months": 3,
+  "seq_len": 12,
+  "grid": {
+    "Hs": 18,
+    "Ws": 21,
+    "lat_range": [
+      5.0,
+      39.0
+    ],
+    "lon_range": [
+      60.0,
+      100.0
+    ]
+  },
+  "files": {
+    "oni_csv": "ensemble_oni_2026.csv",
+    "maps_npz": "ensemble_maps_2026.npz",
+    "oni_png": "forecast_oni_2026.png",
+    "maps_png": "forecast_maps_2026.png"
+  }
+}
