@@ -27,5 +27,20 @@ drive_folder_id.txt
 # Deep learning model (maintained separately)
 CNNTCN/
 
+# Report sources and build artifacts
+El_Nino.md
+IMPLEMENTATION_AND_RESULTS.*
+rnn_lstm_gru_paper.md
+claude_code_prompt_3.4.4_3.4.5.md
+README.md
+
+# Google Drive upload helpers
+Test.py
+test_drive.py
+generate_csv_summary.py
+
+# Superseded index data
+meiv2.csv
+
 # Scratch
 untitled folder/
