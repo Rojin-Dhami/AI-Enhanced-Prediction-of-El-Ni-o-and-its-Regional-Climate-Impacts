@@ -12,7 +12,7 @@ Steps:
   5. Align target: Niño 3.4 at t+6 (window end + 6 months)
   6. Chronological split: train 1980-2018, val 2019-2022, test 2023-2025
 
-Output: Outputs/pipeline_output_stratified_regularized/
+Output: results/method1_stratified_regularized/
 """
 
 import json
@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 INPUT_CSV = DATA_DIR / "combined_era5_oras5.csv"
 NINO34_CSV = DATA_DIR / "ERA5" / "nino34_index_monthly.csv"
-OUTPUT_DIR = BASE_DIR / "Outputs" / "pipeline_output_stratified_regularized"
+OUTPUT_DIR = BASE_DIR / "results" / "method1_stratified_regularized"
 
 ANOM_Z_COLS = [
     "avg_iews_anom_z", "avg_inss_anom_z", "ttr_anom_z",

@@ -42,5 +42,16 @@ generate_csv_summary.py
 # Superseded index data
 meiv2.csv
 
+# Literature PDFs (published papers, cited in the report's references)
+Research Paper/
+
+# Experiments outside the report's scope
+Outputs/
+04_method1_flat_mifs/run_no_mifs.py
+04_method1_flat_mifs/pipeline_output/
+
 # Scratch
+scripts/
+notebooks/
+Analysis Scripts/
 untitled folder/

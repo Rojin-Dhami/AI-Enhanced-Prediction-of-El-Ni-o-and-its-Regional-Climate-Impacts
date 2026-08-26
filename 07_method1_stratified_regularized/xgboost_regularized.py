@@ -14,7 +14,7 @@ Regularization grid (anti-overfitting):
   reg_alpha        : [0, 0.5, 1.0]   — L1
   reg_lambda       : [1, 5, 10]      — L2
 
-Output saved to: Outputs/pipeline_output_stratified_regularized/
+Output saved to: results/method1_stratified_regularized/
 """
 
 import numpy as np
@@ -35,7 +35,7 @@ except (ImportError, Exception):
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 BASE_DIR   = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = BASE_DIR / "Outputs" / "pipeline_output_stratified_regularized"
+OUTPUT_DIR = BASE_DIR / "results" / "method1_stratified_regularized"
 
 # Anti-overfitting regularized grid
 PARAM_GRID = {

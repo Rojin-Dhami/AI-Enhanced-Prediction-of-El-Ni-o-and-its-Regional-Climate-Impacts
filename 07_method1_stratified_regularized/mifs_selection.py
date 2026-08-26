@@ -39,7 +39,7 @@ except (ImportError, Exception):
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = BASE_DIR / "Outputs" / "pipeline_output_stratified_regularized"
+OUTPUT_DIR = BASE_DIR / "results" / "method1_stratified_regularized"
 
 N_CANDIDATES = 300     # target candidate pool size (budget)
 MAX_K = 50             # maximum features to select in MIFS

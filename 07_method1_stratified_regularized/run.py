@@ -10,7 +10,7 @@ Combines:
     subsample and colsample_bytree restrictions.
 
 All outputs saved to:
-  Outputs/pipeline_output_stratified_regularized/
+  results/method1_stratified_regularized/
 
 Usage:
     python run.py
@@ -24,7 +24,7 @@ from pathlib import Path
 
 THIS_DIR   = Path(__file__).resolve().parent
 BASE_DIR   = THIS_DIR.parent
-OUTPUT_DIR = BASE_DIR / "Outputs" / "pipeline_output_stratified_regularized"
+OUTPUT_DIR = BASE_DIR / "results" / "method1_stratified_regularized"
 
 # Ensure imports resolve to this folder's modules
 if str(THIS_DIR) not in sys.path:
