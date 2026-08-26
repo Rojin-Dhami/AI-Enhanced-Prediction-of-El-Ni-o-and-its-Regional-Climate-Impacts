@@ -1,16 +1,18 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: #020617;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(14, 116, 144, 0.18), transparent 28rem),
+    #020617;
   color: #f8fafc;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: #ecfeff;
 }
