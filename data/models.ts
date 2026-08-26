@@ -29,6 +29,7 @@ export const models: ModelInfo[] = [
         description: "MIFS-selected feature baseline for Niño 3.4 forecasting.",
         outputs: [
             "enso-forecast",
+            "feature-selection",
             "feature-importance",
             "performance",
         ],
@@ -37,9 +38,9 @@ export const models: ModelInfo[] = [
         id: "xgboost-method-2",
         name: "XGBoost Method 2",
         shortName: "XGBoost M2",
-        description: "Broad approximate feature-selection baseline and strongest XGBoost benchmark.",
+        description: "Broad approximate feature-selection XGBoost baseline.",
         outputs: [
-            "enso-forecast",
+            "feature-selection",
             "performance",
         ],
     },

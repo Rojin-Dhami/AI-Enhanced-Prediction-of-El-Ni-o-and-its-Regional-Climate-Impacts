@@ -1,6 +1,7 @@
 export type OutputType = 
 | "enso-forecast"
 | "training-curve"
+| "feature-selection"
 | "feature-importance"
 | "temperature-anomaly"
 | "precipitation-anomaly"
@@ -19,6 +20,10 @@ export const outputOptions: OutputOption[] = [
     {
         id: "training-curve",
         label: "Training Curve",
+    },
+    {
+        id: "feature-selection",
+        label: "Feature Selection",
     },
     {
         id: "feature-importance",
