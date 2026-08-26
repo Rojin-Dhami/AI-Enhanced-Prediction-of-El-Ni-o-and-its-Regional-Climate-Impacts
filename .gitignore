@@ -22,3 +22,10 @@ client_secrets.json
 credentials.json
 token.pickle
 *.pickle
+drive_folder_id.txt
+
+# Deep learning model (maintained separately)
+CNNTCN/
+
+# Scratch
+untitled folder/
