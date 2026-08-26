@@ -1,0 +1,227 @@
+\documentclass[12pt, a4paper, oneside]{report}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{tabularx}
+\usepackage{textcomp}           
+\renewcommand{\rmdefault}{utm}   % Times New Roman
+\usepackage{graphicx}           
+\usepackage{float}              
+\usepackage{array}              
+\usepackage{caption}            
+\captionsetup{labelsep=space}   
+\usepackage[hidelinks]{hyperref}
+\usepackage{setspace}            % For precise line spacing control
+\newcommand{\degree}{$^\circ$}
+
+% ============================================================
+% PAGE GEOMETRY (1.5" left, 1" others)
+% ============================================================
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+\setlength{\oddsidemargin}{0.5in}    
+\setlength{\evensidemargin}{0in}     
+\setlength{\textwidth}{5.75in}       
+\setlength{\topmargin}{0in}          
+\setlength{\textheight}{9in}         
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\setlength{\footskip}{0.5in}
+
+% ============================================================
+% LINE SPACING & PARAGRAPH
+% ============================================================
+\setstretch{1.3}  % ~1.5 line spacing for Times New Roman
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt} % Reduced from 18pt to fix excessive gap
+
+% ============================================================
+% HEADING FORMATS (Strictly matching PDF Guidelines)
+% ============================================================
+\makeatletter
+\renewcommand{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi
+  \global\@topnum\z@
+  \@afterindentfalse
+  \secdef\@chapter\@schapter}
+\def\@makechapterhead#1{%
+  {\parindent \z@ \raggedright \normalfont\normalsize
+    \bfseries \thechapter.\hspace{0.5em}\MakeUppercase{#1}\par\nobreak
+    \vskip 12pt
+  }}
+\def\@makeschapterhead#1{%
+  {\parindent \z@ \raggedright \normalfont\normalsize
+    \bfseries \MakeUppercase{#1}\par\nobreak
+    \vskip 12pt
+  }}
+
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {0pt}{10pt}{\normalfont\normalsize\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {0pt}{8pt}{\normalfont\normalsize\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+  {0pt}{6pt}{\normalfont\normalsize\bfseries}}
+
+\renewcommand{\l@chapter}[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip 6pt
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak
+      \leaders\hbox{$\m@th \mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}\hfill
+      \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+      \penalty\@highpenalty
+    \endgroup
+  \fi}
+\makeatother
+
+% ============================================================
+% PAGE STYLE
+% ============================================================
+\pagestyle{plain} % Default page style (page numbers at bottom)
+
+% ============================================================
+% TOC / LOF / LOT FORMATTING
+% ============================================================
+\usepackage[titles]{tocloft}
+
+\setlength{\cftbeforechapskip}{4pt}
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{1pt}
+\setlength{\cftbeforefigskip}{0pt}   
+\setlength{\cftbeforetabskip}{0pt}   
+
+\renewcommand{\cfttoctitlefont}{\normalsize\bfseries}
+\renewcommand{\cftaftertoctitle}{\par\vskip 6pt}
+\renewcommand{\cftloftitlefont}{\normalsize\bfseries}
+\renewcommand{\cftafterloftitle}{\par\vskip 6pt} 
+\renewcommand{\cftlottitlefont}{\normalsize\bfseries}
+\renewcommand{\cftafterlottitle}{\par\vskip 6pt} 
+
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{0pt}
+\setlength{\cftbeforeloftitleskip}{0pt}
+\setlength{\cftafterloftitleskip}{0pt}
+\setlength{\cftbeforelottitleskip}{0pt}
+\setlength{\cftafterlottitleskip}{0pt}
+
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\setcounter{tocdepth}{3}         
+\setcounter{secnumdepth}{3}      
+
+\renewcommand{\chaptername}{}
+\makeatletter
+\renewcommand{\@chapapp}{}
+\makeatother
+
+% ============================================================
+% FIGURE AND TABLE NUMBERING
+% ============================================================
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+\renewcommand{\thetable}{\thechapter-\arabic{table}}
+\renewcommand{\theequation}{\thechapter-\arabic{equation}}
+
+\renewcommand{\cftfigpresnum}{Figure }
+\renewcommand{\cfttabpresnum}{Table }
+\setlength{\cftfignumwidth}{5.5em}
+\setlength{\cfttabnumwidth}{5em}
+
+% ============================================================
+% BIBLIOGRAPHY
+% ============================================================
+\renewcommand{\bibname}{REFERENCES}
+
+\begin{document}
+
+% =====================
+% COVER & TITLE PAGES (No page numbers)
+% =====================
+\pagestyle{empty} % Temporarily disable page numbers
+\input{src/frontmatter/coverpage}
+\input{src/frontmatter/titlepage}
+\pagestyle{plain} % Restore page numbers for the rest of the document
+
+% =====================
+% FRONTMATTER (Starts Roman numbering: i, ii, iii...)
+% =====================
+\pagenumbering{roman}
+\setcounter{page}{1} % Acknowledgement will be page 'i'
+\input{report/src/frontmatter/declaration}
+\input{report/src/frontmatter/certificate}
+\input{report/src/frontmatter/copyright}
+\input{report/src/frontmatter/acknow}
+\input{report/src/frontmatter/abstract}
+
+% TOC (1.0 line spacing per guideline for extensive lists)
+\begingroup
+  \setstretch{1.0}
+  \tableofcontents
+\endgroup
+\clearpage
+
+% LIST OF FIGURES with proper spacing
+\begingroup
+  \setstretch{1.0}                    % Single line spacing (per guidelines)
+  \setlength{\parskip}{0pt}           % Remove paragraph spacing
+  \setlength{\cftbeforefigskip}{0pt}  % Remove space between figure entries
+  \raggedbottom                       % Prevent vertical stretching
+  \addcontentsline{toc}{chapter}{LIST OF FIGURES}
+  \renewcommand{\listfigurename}{LIST OF FIGURES}
+  \listoffigures
+\endgroup
+\clearpage
+
+% LIST OF TABLES (Spacing Fixed)
+\begingroup
+  \setstretch{1.0}
+  \setlength{\parskip}{0pt}
+  \setlength{\cftbeforetabskip}{3pt} % Uniform 3pt spacing between tables
+  \raggedbottom % Prevents stretching
+  \addcontentsline{toc}{chapter}{LIST OF TABLES}
+  \renewcommand{\listtablename}{LIST OF TABLES}
+  \listoftables
+\endgroup
+\clearpage
+
+% LIST OF ABBREVIATIONS
+\input{src/frontmatter/list_abbr}
+\clearpage
+
+% =====================
+% MAINMATTER (Starts Arabic numbering: 1, 2, 3...)
+% =====================
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{report/src/chapters/intro}
+\input{report/src/chapters/literatureReview}
+\input{report/src/chapters/requirement_analysis}
+\input{report/src/chapters/methodology}
+\input{report/src/chapters/implementation}
+\input{report/src/chapters/results}
+\input{report/src/chapters/future}
+\input{report/src/chapters/conclusion}
+\input{report/src/chapters/appendix}
+
+
+% =====================
+% REFERENCES
+% =====================
+\clearpage
+\addcontentsline{toc}{chapter}{REFERENCES}
+
+\nocite{*}
+
+\bibliographystyle{IEEEtran}
+\bibliography{report/references}
+
+\end{document}

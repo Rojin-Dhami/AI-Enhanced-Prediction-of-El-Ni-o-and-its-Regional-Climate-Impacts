@@ -1,0 +1,45 @@
+\chapter{CONCLUSION}
+\label{chap:conclusion}
+
+\section{Overall Achievement}
+This project developed and validated an end-to-end machine learning framework for El Ni\~{n}o--Southern Oscillation (ENSO) forecasting and South Asian regional climate impact assessment. Moving from data pipeline validation through baseline model development to the final deep learning architecture, the project shows that spatiotemporal convolutional networks can capture the ocean-atmosphere dynamics behind ENSO evolution and project these global patterns into regional precipitation and temperature anomalies across South Asia.
+
+\section{Achievement of Individual Objectives}
+
+\subsection{Objective 1: ENSO State Forecasting}
+The first objective was to develop a CNN-TCN model capable of forecasting the Ni\~{n}o 3.4 index at a 3 to 6-month lead time using ERA5 and ORAS5 reanalysis data spanning 1980--2025. This was achieved through a hybrid architecture that processes four-dimensional input tensors $(12 \times 30 \times 100 \times 6)$ directly, preserving the spatial topology of climate fields while modeling temporal dependencies through dilated causal convolutions.
+
+The results support this. The CNN-TCN model reached a test Pearson correlation of $0.9474$ at 3-month lead time and $0.8256$ at 6-month lead time, which indicates the architecture learned the spatiotemporal patterns governing ENSO evolution. Test RMSE dropped from $0.9077\,^{\circ}\mathrm{C}$ for the Method 1 baseline to $0.3781\,^{\circ}\mathrm{C}$ for the CNN-TCN at 3-month lead. That gap suggests preserving spatial topology through convolutional feature extraction, rather than flattening the input tensor, lets the model pick up physical relationships that tree-based methods miss.
+
+The model also correctly predicted the phase transitions of major ENSO events, including the triple-dip La Ni\~{n}a (2020--2022) and the 2023--2024 Super El Ni\~{n}o, while keeping amplitude fidelity. That points to multi-month ENSO forecasting skill roughly comparable to operational dynamical models. The 5-seed ensemble produced a mean correlation of $0.9195 \pm 0.0167$ with low variance across seeds, so the forecasting capability looks robust rather than an artifact of stochastic initialization.
+
+\subsection{Objective 2: South Asian Regional Impact Assessment}
+The second objective was to build a coupled impact assessment module producing deterministic forecasts of June--July--August--September (JJAS) precipitation and temperature anomalies over South Asia from the predicted Ni\~{n}o 3.4 index. This was addressed with a multi-task learning framework using two independent prediction heads that share a common spatiotemporal encoder, combined with Principal Component Analysis (PCA) target compression and a custom spatial correlation loss function to handle the high dimensionality of the South Asian domain ($G = 340$ grid cells).
+
+Skill varies by variable, but the objective was met. The model achieved a spatial correlation of $0.3049 \pm 0.0056$ for temperature anomalies, which indicates a reliable capacity to project the global ocean state into regional heating and cooling patterns across South Asia; the teleconnection between ENSO and South Asian temperature is apparently strong and consistent enough for a data-driven approach to pick up.
+
+For precipitation, the model achieved a spatial correlation of $0.1088 \pm 0.0045$. That is lower than the temperature correlation, but still a meaningful result given how chaotic and geographically constrained precipitation tends to be. The low standard deviation ($\pm 0.0045$) across the 5-seed ensemble suggests this teleconnection signal is genuine, not a product of noise or random initialization, and that the impact assessment module learned to map ENSO states onto regional precipitation anomaly patterns.
+
+The actual-versus-predicted anomaly maps for December 2025 (Figure~\ref{fig:spatial_maps_dec2025}) show the model capturing broad spatial patterns, particularly temperature gradients across the South Asian domain, which suggests the combination of PCA compression and spatial correlation loss let the model learn large-scale weather patterns rather than overfit to isolated grid-cell noise.
+
+\section{Significance of the Findings}
+
+The model reached test correlations above $0.94$ at 3-month lead and $0.82$ at 6-month lead using a fraction of the compute that coupled ocean-atmosphere General Circulation Models require. That suggests AI-enhanced forecasting could work as a complement to traditional dynamical models for operational ENSO prediction, not a replacement.
+
+The model also preserved the full amplitude of extreme events such as the 2023--2024 Super El Ni\~{n}o, where the tree-based baselines systematically dampened peak magnitudes. Amplitude fidelity matters here because the socio-economic impacts of ENSO scale non-linearly with event intensity, so underestimating a peak has real consequences downstream.
+
+The successful projection of global ENSO states into regional South Asian temperature and precipitation anomalies suggests the teleconnection pathways between the tropical Pacific and the Indian subcontinent can be learned directly from reanalysis data, without explicit physical parameterization. That is useful groundwork for early warning systems that turn ENSO forecasts into regional climate outlooks for agriculture, water resource management, and disaster preparedness.
+
+The two MIFS methods (Method 1 and Method 2) independently identified Ocean Heat Content and central-to-eastern equatorial Pacific SST as the dominant predictors of ENSO evolution, which lines up with the existing climate science literature. The agreement between data-driven feature selection and physical understanding suggests the preprocessing pipeline and feature engineering captured real physical relationships rather than spurious statistical correlations.
+
+\section{Limitations and Future Scope}
+
+Using monthly-averaged reanalysis data smoothed out sub-monthly, high-frequency atmospheric phenomena such as westerly wind bursts, which play a role in ENSO initiation. Daily or pentad-resolution data could capture these triggers and might improve prediction skill at longer lead times.
+
+The model's precipitation forecasting skill, while statistically significant, is more modest than its temperature forecasting skill. This reflects how chaotic precipitation is and the limits of deterministic forecasting for highly non-linear convective processes. Probabilistic forecasting frameworks or diffusion models (as in Xu et al., 2025) could quantify prediction uncertainty and give confidence intervals for regional impact assessments.
+
+The current architecture does not account for other climate drivers such as the Indian Ocean Dipole (IOD) or the Arctic Oscillation, both of which can modulate ENSO's impacts on South Asia. Adding these to the input feature set could improve the accuracy of regional impact forecasts.
+
+The 5-seed ensemble showed robustness to initialization noise, but the model has not been tested on truly out-of-distribution scenarios, such as unprecedented ENSO events under accelerated climate change. Future work should look at how the model generalizes under non-stationary climate conditions, and consider domain adaptation or physics-informed neural networks to improve robustness to distributional shift.
+
+In summary, this project shows that a spatiotemporal deep learning framework can handle both ENSO state forecasting and regional impact assessment with skill sufficient for climate risk assessment applications. It is a starting point for operational early warning systems that connect global ENSO prediction to localized decision support for South Asian communities.

@@ -1,0 +1,27 @@
+\chapter{FUTURE ENHANCEMENTS}
+\label{chap:future-work}
+
+\section{Data Resolution and Spatial Processing}
+\begin{itemize}
+    \item Incorporate daily or pentad (5-day) reanalysis data to capture high-frequency atmospheric triggers, such as westerly wind bursts, which are currently smoothed out by monthly averaging.
+    \item Process ORAS5 ocean reanalysis data on its native curvilinear NEMO grid using graph-based or unstructured mesh networks to eliminate bilinear interpolation artifacts in regions with sharp SST gradients (e.g., the eastern Pacific cold tongue).
+\end{itemize}
+
+\section{Advanced Spatiotemporal Architectures}
+\begin{itemize}
+    \item Transition from flattened-tensor tree-based ensembles to end-to-end spatiotemporal deep learning models (e.g., CNN-TCN, Vision Transformers, or Graph Neural Networks) to preserve spatial topology and prevent amplitude underestimation during extreme ENSO events.
+    \item Replace discrete Mutual Information Feature Selection (MIFS) with differentiable spatial and channel attention mechanisms to allow the network to dynamically weight feature importance without destroying the 4D tensor structure.
+    \item Utilize Graph Neural Networks (GNNs) to process climate data on a true spherical manifold, eliminating spatial distortions introduced by 2D equirectangular grid projections.
+\end{itemize}
+
+\section{Probabilistic Forecasting and Uncertainty Quantification}
+\begin{itemize}
+    \item Shift from deterministic point forecasts to probabilistic frameworks (e.g., Monte Carlo Dropout, Deep Ensembles, or Bayesian Neural Networks) to output predictive distributions.
+    \item Generate confidence intervals for Ni\~{n}o 3.4 index and South Asian regional anomaly forecasts to support risk-based decision-making for agriculture and water resource management.
+\end{itemize}
+
+\section{Extended Predictive Horizons and Regional Impacts}
+\begin{itemize}
+    \item Incorporate slow-varying boundary conditions (e.g., global soil moisture, snow cover, Atlantic SSTs) to extend the skillful deterministic forecast horizon beyond the current 3- to 6-month limit and mitigate the spring predictability barrier.
+    \item Expand the South Asian regional impact assessment head to forecast additional critical hydro-meteorological variables, including surface runoff, soil moisture, and the frequency of extreme weather events (e.g., tropical cyclones in the Bay of Bengal).
+\end{itemize}

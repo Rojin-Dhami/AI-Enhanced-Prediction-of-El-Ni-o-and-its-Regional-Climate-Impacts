@@ -1,0 +1,71 @@
+\chapter{LITERATURE REVIEW}
+
+\section{ENSO Prediction: From Dynamical Models to Deep Learning}
+
+The prediction of ENSO has been a central challenge in climate science for over four decades. Early approaches relied on linear statistical models and dynamical ocean-atmosphere coupled models \cite{dijkstra2019deep}. While dynamical models based on General Circulation Models (GCMs) can capture the fundamental physics of ENSO, their predictive skill drops sharply beyond 6--9 months due to the well-documented ``spring predictability barrier,'' where forecast initialization errors grow rapidly during boreal spring \cite{mahesh2024physics}.
+
+The advent of machine learning and deep learning has opened new avenues for ENSO prediction. Unlike dynamical models that solve physical equations numerically, data-driven approaches learn complex nonlinear mappings directly from observational data, potentially capturing dynamics that are poorly represented in physical models.
+
+\section{Deep Learning Approaches for ENSO Forecasting}
+
+\subsection{CNN-Based Multi-Year ENSO Forecasting}
+
+Ham et al. \cite{ham2019deep} demonstrated a breakthrough in ENSO prediction by applying transfer learning with CNNs to forecast the Ni\~{n}o 3.4 index at lead times exceeding 18 months. Their approach addressed the fundamental challenge of limited observational data by pre-training the CNN on historical simulations from CMIP5 climate models and fine-tuning on reanalysis data (1871--1973 for training, 1984--2017 for testing). The CNN architecture processes monthly maps of SST, ocean heat content (upper 300m), and sea level pressure as multi-channel inputs, producing Ni\~{n}o 3.4 index predictions at various lead times.
+
+The model achieved an all-season correlation skill of 0.65 at 17-month lead time, substantially outperforming both dynamical models and conventional statistical methods. Importantly, the CNN successfully predicted the onset and amplitude of El Ni\~{n}o events that traditional models missed. Gradient-based saliency analysis revealed that the network learned physically meaningful precursor patterns, including subsurface heat content anomalies in the western Pacific that serve as recharged energy for subsequent El Ni\~{n}o development. However, the model showed reduced skill for La Ni\~{n}a events and lacked uncertainty quantification.
+
+\subsection{Autoencoder-LSTM Hybrid Architecture}
+
+Dijkstra et al. \cite{dijkstra2019deep} proposed a hybrid deep learning architecture combining autoencoders with LSTM networks for ENSO forecasting. Their approach first employs a convolutional autoencoder to compress high-dimensional SST fields into a low-dimensional latent representation, effectively performing nonlinear dimensionality reduction. The temporal evolution of these latent features is then modeled using an LSTM network, which captures the sequential dependencies inherent in ENSO dynamics.
+
+The autoencoder-LSTM framework was trained on SODA reanalysis data and evaluated against persistence forecasts and linear inverse models. The model demonstrated competitive skill at lead times of 6--12 months, with the autoencoder successfully capturing the dominant spatial patterns of ENSO variability (comparable to traditional EOF analysis but with nonlinear generalization). The LSTM component effectively learned the oscillatory nature of ENSO transitions between warm and cool phases. The authors noted that the latent space representation provided physical interpretability, with different latent dimensions corresponding to recognizable ENSO precursor patterns.
+
+\subsection{Physics-Guided Deep Echo State Networks}
+
+Mahesh et al. \cite{mahesh2024physics} introduced a physics-guided Deep Echo State Network (DESN) approach to enhance ENSO predictability limits. Echo State Networks (ESNs) are a variant of recurrent neural networks where the recurrent layer (reservoir) has fixed random weights, and only the output layer is trained. This architecture offers computational efficiency and avoids the vanishing gradient problem that plagues conventional RNNs during training.
+
+The key innovation in their work is the incorporation of physics-based constraints into the ESN framework. Specifically, they embed known ENSO dynamics, such as the recharge-discharge oscillator mechanism and delayed oscillator theory, as structural priors in the reservoir connectivity. The physics-guided DESN achieved prediction skill comparable to deep learning baselines (correlation $>$ 0.5 at 18-month lead) while requiring significantly fewer trainable parameters and providing enhanced interpretability.
+
+The model was trained on ERA5 reanalysis data with SST, thermocline depth, and zonal wind stress as inputs. A notable advantage is the model's ability to overcome the spring predictability barrier more effectively than purely data-driven approaches, attributed to the physics constraints preventing the model from learning spurious correlations that break down during spring transitions.
+
+\subsection{ResoNet: Robust and Explainable ENSO Forecasting}
+
+Ye et al. \cite{ye2024resonet} developed ResoNet, a hybrid deep learning framework combining Residual Network (ResNet) architecture with physical ocean dynamics for robust and explainable ENSO forecasting. The model integrates residual learning blocks that capture multi-scale spatiotemporal features from SST, ocean heat content, and wind stress fields. A key contribution is the attention mechanism that identifies physically meaningful precursor regions.
+
+ResoNet achieved state-of-the-art performance with correlation skills exceeding 0.7 at 12-month lead time and maintained useful skill ($>$ 0.5) beyond 18 months. The explainability module generates spatial attribution maps highlighting the oceanic regions most influential for each prediction, enhancing trust in the model's outputs. The model demonstrated particular strength in predicting the diversity of El Ni\~{n}o events (Eastern Pacific vs. Central Pacific types), a capability lacking in many earlier deep learning approaches. The framework also incorporated ensemble prediction to provide uncertainty estimates, generating probabilistic forecasts rather than single deterministic predictions.
+
+\section{Machine Learning for Regional Climate Impact Assessment}
+
+\subsection{ENSO-Driven Weather Pattern Prediction}
+
+Dutta et al. \cite{dutta2024seasonal} investigated the application of machine learning for predicting seasonal weather patterns from ENSO indices, bridging the gap between large-scale ENSO state prediction and regional climate impacts. Their study employed Random Forest, Gradient Boosting, and Support Vector Machine classifiers to predict seasonal precipitation and temperature categories (below normal, normal, above normal) conditioned on multivariate ENSO indicators including Ni\~{n}o 3.4, Southern Oscillation Index (SOI), and the Multivariate ENSO Index (MEI).
+
+The results demonstrated that ensemble machine learning methods, particularly XGBoost and Random Forest, achieved classification accuracies of 70--82\% for seasonal precipitation categories when ENSO indices from 2--3 months prior were used as predictors. Feature importance analysis revealed that the combination of Ni\~{n}o 3.4 amplitude and rate of change provided the strongest predictive signal for South Asian monsoon anomalies. However, the study was limited to categorical predictions and did not provide spatially resolved forecasts.
+
+\section{Comparison of Existing Approaches}
+
+Table \ref{tab:lit_comparison} summarizes the key characteristics and performance metrics of the reviewed ENSO forecasting approaches.
+
+\begin{table}[ht]
+\centering
+\caption{Comparison of Deep Learning Approaches for ENSO Forecasting}
+\label{tab:lit_comparison}
+\small
+\begin{tabular}{|l|l|c|c|c|}
+\hline
+\textbf{Study} & \textbf{Method} & \textbf{Max Lead} & \textbf{Corr.} & \textbf{Uncert.} \\
+\hline
+Ham et al. \cite{ham2019deep} & CNN + Transfer Learning & 17 mo. & 0.65 & No \\
+\hline
+Dijkstra et al. \cite{dijkstra2019deep} & Autoencoder + LSTM & 12 mo. & 0.60 & No \\
+\hline
+Mahesh et al. \cite{mahesh2024physics} & Physics-guided DESN & 18 mo. & 0.50 & No \\
+\hline
+Ye et al. \cite{ye2024resonet} & ResoNet (ResNet + Physics) & 18 mo. & 0.70 & Yes \\
+\hline
+Dutta et al. \cite{dutta2024seasonal} & XGBoost/RF Classification & 3 mo. & 0.82 & No \\
+\hline
+\end{tabular}
+\end{table}
+
+

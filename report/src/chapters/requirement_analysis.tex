@@ -1,0 +1,56 @@
+\chapter{REQUIREMENT ANALYSIS}
+
+This chapter enumerates and describes the hardware, software, and data components required for the successful execution of the ENSO forecasting project. It also evaluates the technical, economic, time, and operational feasibility of the proposed system.
+
+\section{Project Requirements}
+
+The development of a deep learning framework for ENSO forecasting and regional climate impact assessment requires specific computational resources, software tools, and high-dimensional climate datasets. These requirements are detailed below.
+
+\subsection{Hardware Requirements}
+
+While the initial data preprocessing and baseline model development can be performed on standard local machines, the training of the Convolutional Neural Network--Temporal Convolutional Network (CNN-TCN) architecture requires significant computational power. 
+\begin{itemize}
+    \item \textbf{Local Development Machine:} A standard laptop or desktop computer with at least 16 GB of RAM and a multi-core processor for code development, data inspection, and lightweight baseline testing (e.g., XGBoost).
+    \item \textbf{Cloud GPU Computing:} Access to high-performance cloud GPUs (such as NVIDIA Tesla V100 or A100 via Google Colab Pro or AWS EC2) is strictly required. Training deep learning models on 45 years of 2\degree $\times$ 2\degree spatiotemporal climate data involves millions of parameters and large batch processing, which exceeds the capacity of standard consumer hardware.
+    \item \textbf{Storage:} Approximately 500 GB to 1 TB of storage (local or cloud-based) is required to store the raw and processed NetCDF and Zarr files for the ERA5 and ORAS5 datasets.
+\end{itemize}
+
+\subsection{Software Requirements}
+
+The project relies entirely on open-source software and standard scientific computing libraries. The core software stack includes:
+\begin{itemize}
+    \item \textbf{Programming Language:} Python 3.8 or higher, chosen for its extensive ecosystem in machine learning and data science.
+    \item \textbf{Deep Learning Frameworks:} PyTorch or TensorFlow for building, training, and evaluating the CNN-TCN hybrid architecture.
+    \item \textbf{Data Processing and Analysis:} Xarray for handling multi-dimensional climate arrays (NetCDF/Zarr), Pandas and NumPy for data manipulation, and Scikit-learn for feature selection (MIFS) and baseline modeling.
+    \item \textbf{API and Version Control:} The Copernicus Climate Data Store (CDS) API for automated data fetching, and Git/GitHub for version control and collaborative code management.
+    \item \textbf{Documentation:} \LaTeX{} (via Overleaf) for compiling the final report according to IOE formatting guidelines.
+\end{itemize}
+
+\subsection{Data Requirements}
+
+The model requires high-quality, long-term historical climate data to capture interannual variability. The specific datasets include:
+\begin{itemize}
+    \item \textbf{ERA5 Reanalysis Data:} Monthly-mean Sea Surface Temperature (SST), 2-meter temperature, and precipitation data from the Copernicus Climate Data Store.
+    \item \textbf{ORAS5 Ocean Reanalysis:} Subsurface ocean variables (temperature and salinity) accessed via the ARCO Zarr store to provide depth-related ENSO precursor signals.
+    \item \textbf{NOAA Ni\~{n}o Indices:} Official historical Ni\~{n}o 3.4 indices used as the ground truth for validating the model's predictive accuracy.
+\end{itemize}
+
+\section{Feasibility Study}
+
+A comprehensive feasibility analysis was conducted to ensure that the project objectives can be realistically achieved within the given constraints.
+
+\subsection{Technical Feasibility}
+
+The project is technically feasible given the availability of all required datasets through public repositories (ECMWF CDS, NOAA, ESGF). The Convolutional Neural Network--Temporal Convolutional Network (CNN-TCN) architecture is well-supported in PyTorch, and the 45-year dataset (1980--2025) provides sufficient temporal coverage for robust model training. The six-stage pipeline (data ingestion, preprocessing, feature engineering, MIFS feature selection, model development, and forecasting) is modular and implementable within the team's existing Python and machine learning skill set.
+
+\subsection{Economic Feasibility}
+
+The project incurs near-zero data and software costs, as all datasets and development tools are freely available. The primary expenditure is cloud compute (Google Colab Pro) for CNN-TCN training on ERA5 and ORAS5 reanalysis fields. The total estimated budget of NPR~10,500 is well within the means of a student project group, with no specialized hardware procurement required.
+
+\subsection{Time Feasibility}
+
+Based on the project schedule spanning June 1 to September 7, 2025 (approximately 14 weeks), the timeline is realistic and well-structured. The work begins with literature review, data collection, and preprocessing in the first four weeks, followed by feature engineering, MIFS feature selection, and parallel development of the XGBoost baseline and CNN-TCN model through mid-August. Model training, hyperparameter tuning, forecast generation, and evaluation are conducted in the final weeks, with documentation and report writing running concurrently from mid-August through project completion. Tasks are sequenced with deliberate overlaps (for instance, XGBoost baseline and CNN-TCN development proceed in parallel) to maximize efficiency within the 14-week window.
+
+\subsection{Operational Feasibility}
+
+The project delivers a self-contained Python-based forecasting pipeline publishable as an open-source GitHub repository. The modular architecture ensures each stage can be independently tested and debugged. All four team members bring complementary skills in machine learning, data preprocessing, and climate data handling, ensuring balanced workload distribution. The final outputs (ENSO state forecasts and deterministic South Asian precipitation and temperature anomaly maps for JJAS 2026) are directly interpretable and actionable for the target academic audience.

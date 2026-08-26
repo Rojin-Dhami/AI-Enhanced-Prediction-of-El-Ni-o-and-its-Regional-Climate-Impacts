@@ -1,0 +1,87 @@
+\chapter{INTRODUCTION}
+
+\section{Background}
+
+The El Ni\~{n}o-Southern Oscillation (ENSO) is the dominant mode of interannual climate variability, influencing weather patterns worldwide through coupled ocean-atmosphere interactions in the tropical Pacific \cite{ham2019deep}. ENSO cycles between warm (El Ni\~{n}o) and cool (La Ni\~{n}a) phases, driven primarily by anomalies in Sea Surface Temperature (SST) across the equatorial Pacific Ocean. These events have far-reaching teleconnections that affect precipitation, temperature, and extreme weather events across multiple continents.
+
+Furthermore, anthropogenic climate change is increasingly modulating ENSO dynamics. Recent climatological studies indicate a trend toward more frequent and intense extreme ENSO events, including a higher occurrence of Central Pacific (Modoki) El Ni\~{n}os and ``Super El Ni\~{n}os'' \cite{cai2015continued}. This non-stationarity in the background state of the tropical Pacific complicates the physical mechanisms driving ENSO, thereby exacerbating the ``spring predictability barrier'' and challenging the skill of traditional dynamical models.
+
+South Asia, where the Indian Summer Monsoon provides over 70\% of annual rainfall, is highly vulnerable to ENSO-induced climate anomalies \cite{ye2024resonet}. El Ni\~{n}o events are associated with weakened monsoon circulation, leading to droughts in the Indian subcontinent, while La Ni\~{n}a events often intensify monsoon rainfall \cite{mahesh2024physics}. Climate outlooks indicate the possibility of ENSO-related anomalies during 2026, highlighting the importance of improved forecasting systems.
+
+Nepal, situated in the central Himalayas, is particularly susceptible to these teleconnections due to its fragile topography and heavy reliance on monsoon-dependent agriculture and hydropower. ENSO phases significantly dictate the spatial and temporal distribution of precipitation across Nepal's diverse elevational gradients. During El Ni\~{n}o years, Nepal frequently experiences below-normal monsoon rainfall and delayed monsoon onsets, which critically deplete soil moisture, reduce hydropower generation capacity, and trigger winter and spring droughts. Conversely, La Ni\~{n}a phases are often associated with above-normal rainfall, increasing the risk of catastrophic flooding and landslides in the steep river basins \cite{shrestha2021enso}.
+
+Traditional dynamical climate models, such as General Circulation Models (GCMs), provide seasonal ENSO forecasts but face limitations in prediction skill beyond 6--9 months due to the ``spring predictability barrier'' \cite{dijkstra2019deep}. Recent advances in deep learning have demonstrated superior forecasting skill at longer lead times (12--22 months) by extracting complex spatiotemporal patterns from vast reanalysis archives \cite{ham2019deep, mahesh2024physics}. These data-driven approaches leverage Convolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks to capture nonlinear dynamics that traditional statistical methods and dynamical models struggle to represent.
+
+\section{Motivation}
+The motivation for this project stems from three critical factors:
+
+\begin{itemize}
+    \item \textbf{Imminent Climate Risk:} The 2026 El Ni\~{n}o poses significant risks to South Asia's agriculture, water resources, and disaster management infrastructure. Early and accurate prediction enables proactive mitigation strategies.
+    
+    \item \textbf{Limitations of Existing Models:} While dynamical models provide reasonable short-term ENSO forecasts, their skill degrades significantly beyond one season. Deep learning models have shown promise in extending this predictability horizon but are often not tailored to regional impact assessment.
+    
+    \item \textbf{Need for Actionable Regional Forecasts:} Most existing ENSO prediction systems focus on the Ni\~{n}o 3.4 index alone without providing spatially resolved impact assessments for vulnerable regions. There is a critical gap between global ENSO state prediction and localized climate impact forecasting.
+\end{itemize}
+
+\section{Problem Statement}
+Despite significant progress in ENSO forecasting using deep 
+learning, existing approaches face key limitations:
+
+\begin{itemize}
+    \item Most models predict only the Ni\~{n}o 3.4 index 
+    without translating predictions into regional climate 
+    impacts, limiting their practical utility for 
+    disaster preparedness and agricultural planning.
+    
+    \item No unified deep learning framework currently exists 
+    that couples ENSO state forecasting with deterministic 
+    regional impact assessment specifically for South Asian 
+    precipitation and temperature anomalies.
+\end{itemize}
+
+This project addresses these gaps by developing a multi-task 
+CNN-TCN framework that forecasts ENSO state at 6 month lead times 
+and simultaneously produces deterministic precipitation and 
+temperature anomaly maps over South Asia.
+
+\section{Objectives}
+The primary objectives of this project are as follows:
+\begin{itemize}
+    \item To develop a CNN-TCN model to forecast the 
+    Ni\~{n}o 3.4 index at a 6-month lead time using 
+    ERA5 and ORAS5 reanalysis data spanning 1980--2025.
+    
+    \item To develop a coupled impact assessment module 
+    that produces deterministic forecasts of 
+    June--July--August--September precipitation 
+    and temperature anomalies over South Asia based on 
+    the predicted Ni\~{n}o 3.4 index.
+\end{itemize}
+
+\section{Scope and Limitations}
+
+\subsection{Scope}
+\begin{itemize}
+    \item The system will forecast ENSO states using the Ni\~{n}o 3.4 index at lead times of 6 months.
+    \item Regional impact assessment will cover the South Asian domain (5$^{\circ}$N--40$^{\circ}$N, 60$^{\circ}$E--100$^{\circ}$E).
+    \item The model will be trained on publicly available datasets including ERA5 and ORAS5.
+    \item The final deliverable will include a functional forecasting pipeline implemented in Python.
+\end{itemize}
+
+\subsection{Limitations}
+\begin{itemize}
+    \item The model is trained on historical data and may not capture unprecedented climate dynamics.
+    \item The system does not account for other climate drivers (e.g., Indian Ocean Dipole, Arctic Oscillation) that may modulate ENSO impacts.
+    \item Real-time operational deployment is beyond the scope of this project.
+\end{itemize}
+
+\section{Project Applications}
+\begin{itemize}
+    \item \textbf{Agricultural Planning:} The system provides early warning for monsoon deficiency or excess rainfall, enabling farmers and agricultural agencies to guide crop planning and irrigation management.
+
+    \item \textbf{Disaster Preparedness:} The framework identifies regions at elevated flood or drought risk, allowing disaster management authorities to undertake proactive resource allocation.
+
+    \item \textbf{Water Resource Management:} Seasonal reservoir operation planning is supported through deterministic precipitation forecasts generated by this system.
+
+    \item \textbf{Climate Research:} The project contributes to the broader scientific understanding of ENSO teleconnections and advances AI-based climate prediction methodologies.
+\end{itemize}
