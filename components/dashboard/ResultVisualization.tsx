@@ -15,10 +15,10 @@ export default function ResultVisualization({result,}: ResultVisualizationProps)
         );
     }
 
-    return(
+    return (
         <div className="overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
-            <div className="border-b border-slate-800 p-5">
-                <h3 className="text-xl font-semibold text-white">
+            <div className="border-b border-slate-800 p-5 sm:p-6">
+                <h3 className="text-lg font-semibold leading-7 text-white sm:text-xl">
                     {result.title}
                 </h3>
 
@@ -28,8 +28,8 @@ export default function ResultVisualization({result,}: ResultVisualizationProps)
             </div>
 
             {result.image && (
-                <div className="relative w-full bg-white">
-                    <Image src={result.image} alt={result.title} width={1600} height={900} className="h-auto w-full object-contain" priority/>
+                <div className="relative flex max-h-[70vh] w-full items-center justify-center overflow-auto bg-white p-2 sm:p-4">
+                    <Image src={result.image} alt={result.title} width={1600} height={900} className="h-auto max-h-[66vh] w-full object-contain" priority/>
                 </div>
             )}
         </div>
