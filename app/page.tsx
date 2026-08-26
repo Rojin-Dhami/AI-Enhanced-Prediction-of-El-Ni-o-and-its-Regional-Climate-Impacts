@@ -1,10 +1,5 @@
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import StatusCards from "@/components/dashboard/StatusCards";
-import ENSOForecastChart from "@/components/dashboard/ENSOForecastChart";
-import ClimateOutlook from "@/components/dashboard/ClimateOutlook";
-import ClimateSummary from "@/components/dashboard/ClimateSummary";
-import ModelPerformance from "@/components/dashboard/ModelPerformance";
-import HowItWorks from "@/components/dashboard/HowItWorks";
+
 
 export default function Home() {
   return (
@@ -30,7 +25,7 @@ export default function Home() {
 
         <div className="space-y-8">
 
-          <StatusCards/>
+          {/* <StatusCards/>
 
           <ENSOForecastChart/>
 
@@ -40,7 +35,7 @@ export default function Home() {
 
           <ModelPerformance/>
 
-          <HowItWorks/>
+          <HowItWorks/> */}
 
         </div>
 
