@@ -39,3 +39,125 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+```gitignore
+# =========================
+# Dataset / Data Files
+# =========================
+
+# # Ignore the entire data directory
+# data/
+
+# Ignore CSV files anywhere in the project
+*.csv
+
+# Ignore large data formats
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.nc
+*.netcdf
+
+
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+
+# =========================
+# Jupyter Notebook
+# =========================
+
+.ipynb_checkpoints/
+
+
+# =========================
+# Environment / Secrets
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# Streamlit secrets (API keys/credentials) — config.toml (theme) stays tracked
+.streamlit/secrets.toml
+
+
+# =========================
+# IDE / Editor
+# =========================
+
+.vscode/
+.idea/
+
+# VS Code settings that may contain machine-specific information
+*.code-workspace
+
+
+# =========================
+# OS Generated Files
+# =========================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+
+# =========================
+# Logs
+# =========================
+
+*.log
+
+
+# =========================
+# ML / Experiment Outputs
+# =========================
+
+# Model files
+*.pkl
+*.pickle
+*.joblib
+*.pt
+*.pth
+*.ckpt
+
+# Experiment / training outputs
+runs/
+wandb/
+mlruns/
+
+# TensorBoard
+tensorboard/
+
+
+# =========================
+# Temporary Files
+# =========================
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+```
