@@ -54,6 +54,9 @@ dist/
 .env.*
 !.env.example
 
+# Streamlit secrets (API keys/credentials) — config.toml (theme) stays tracked
+.streamlit/secrets.toml
+
 
 # =========================
 # IDE / Editor
