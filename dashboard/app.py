@@ -131,6 +131,13 @@ st.caption(
     f"{meta['pac_data_max']} · generated {meta['generated'][:10]}"
 )
 
+if meta["skipped"]:
+    st.info(
+        f"**{season} {2026}** shown. Month(s) skipped for lack of input data: "
+        f"{', '.join(meta['skipped'])} "
+        f"(needs Pacific observations {meta['lead_months']} months ahead of each target)."
+    )
+
 # --- Sidebar controls ---
 st.sidebar.header("Controls")
 month_options = list(maps["months"])
@@ -146,32 +153,25 @@ st.sidebar.markdown(
 )
 
 # ======================================================================
-# Section 1 — ENSO (Nino 3.4 ONI) status + trend
+# Section 1 — ENSO (Nino 3.4 ONI) ensemble forecast
 # ======================================================================
 st.header("1 · Nino 3.4 ENSO Index (ONI)")
 
 seed_cols = [c for c in oni_df.columns if c.startswith("seed")]
-fc_months = [m for m in oni_df.index if m != f"{season} mean"]
-fc_mean = oni_df.loc[fc_months, "ens_mean"].values
-fc_std  = oni_df.loc[fc_months, "ens_std"].values
-
 row = oni_df.loc[sel_month] if sel_month in oni_df.index else oni_df.loc[f"{season} mean"]
 sel_mean, sel_std = float(row["ens_mean"]), float(row["ens_std"])
 label, color = enso_category(sel_mean)
-start_label, _ = enso_category(fc_mean[0])
-end_label, _ = enso_category(fc_mean[-1])
-trend_str = start_label if start_label == end_label else f"{start_label} \u2192 {end_label}"
 
 c1, c2, c3 = st.columns(3)
-c1.metric(f"{sel_month} ONI (ensemble mean)", f"{sel_mean:+.2f} \u00b0C", f"\u00b1 {sel_std:.2f} spread")
+c1.metric(f"{sel_month} ONI (ensemble mean)", f"{sel_mean:+.2f} °C", f"± {sel_std:.2f} spread")
 c2.markdown(
-    f"**Status**<br><span style='color:{color};font-weight:700;font-size:1.3rem'>{label}</span>",
+    f"### Status\n<span style='color:{color};font-weight:700;font-size:1.4rem'>{label}</span>",
     unsafe_allow_html=True,
 )
-c3.markdown(f"**Forecast trend**<br>{trend_str}", unsafe_allow_html=True)
+c3.metric("Ensemble members", meta["n_members"])
 
-# Bar chart with error bars across the forecast months
-plot_rows = list(oni_df.index)
+# Bar chart with error bars across all months
+plot_rows = [m for m in oni_df.index]
 means = oni_df.loc[plot_rows, "ens_mean"].values
 stds = oni_df.loc[plot_rows, "ens_std"].values
 bar_colors = [enso_category(v)[1] for v in means]
@@ -179,64 +179,27 @@ bar_colors = [enso_category(v)[1] for v in means]
 fig = go.Figure()
 fig.add_bar(
     x=plot_rows, y=means,
-    error_y=dict(type="data", array=stds, visible=True, color=NEUTRAL_GRY),
+    error_y=dict(type="data", array=stds, visible=True),
     marker_color=bar_colors,
     text=[f"{v:+.2f}" for v in means], textposition="outside",
 )
-fig.add_hline(y=0.5, line_dash="dot", line_color="#b3562f", opacity=0.6,
+fig.add_hline(y=0.5, line_dash="dot", line_color="red",
               annotation_text="El Nino (+0.5)", annotation_position="top left")
-fig.add_hline(y=-0.5, line_dash="dot", line_color="#3b6fa0", opacity=0.6,
+fig.add_hline(y=-0.5, line_dash="dot", line_color="blue",
               annotation_text="La Nina (-0.5)", annotation_position="bottom left")
 fig.update_layout(
-    yaxis_title="ONI (\u00b0C)", xaxis_title=None,
-    height=360, margin=dict(t=30, b=10), showlegend=False,
+    yaxis_title="ONI (°C)", xaxis_title=None,
+    height=380, margin=dict(t=30, b=10), showlegend=False,
 )
 st.plotly_chart(fig, use_container_width=True)
 
 with st.expander("Per-member ONI table"):
     st.dataframe(oni_df.style.format("{:.3f}"), use_container_width=True)
 
-# --- Historical -> Current -> Forecast trend line ---
-st.subheader("ENSO trend: historical \u2192 forecast")
-hist = load_historical_oni()
-if hist is not None:
-    cutoff = pd.Timestamp(meta["pac_data_max"]) - pd.DateOffset(months=24)
-    hist_recent = hist[hist["time"] >= cutoff].sort_values("time")
-    fc_dates = pd.to_datetime(fc_months, format="%b %Y")
-    bridge_x = [hist_recent["time"].iloc[-1]] + list(fc_dates)
-    bridge_y = [float(hist_recent["nino34_3m"].iloc[-1])] + list(fc_mean)
-    band_upper = [bridge_y[0]] + list(fc_mean + fc_std)
-    band_lower = [bridge_y[0]] + list(fc_mean - fc_std)
-
-    fig2 = go.Figure()
-    fig2.add_scatter(x=bridge_x + bridge_x[::-1], y=band_upper + band_lower[::-1],
-                     fill="toself", fillcolor="rgba(76,139,180,0.15)",
-                     line=dict(width=0), name="\u00b1 spread", hoverinfo="skip")
-    fig2.add_scatter(x=hist_recent["time"], y=hist_recent["nino34_3m"], mode="lines",
-                     name="Historical (observed)", line=dict(color=NEUTRAL_GRY, width=2))
-    fig2.add_scatter(x=bridge_x, y=bridge_y, mode="lines+markers", name="Forecast (ensemble mean)",
-                     line=dict(color=ACCENT, width=2, dash="dash"), marker=dict(size=6))
-    fig2.add_hline(y=0.5, line_dash="dot", line_color="#b3562f", opacity=0.5)
-    fig2.add_hline(y=-0.5, line_dash="dot", line_color="#3b6fa0", opacity=0.5)
-    fig2.update_layout(
-        height=360, margin=dict(t=20, b=10), yaxis_title="ONI (\u00b0C)", xaxis_title=None,
-        legend=dict(orientation="h", y=1.15),
-    )
-    st.plotly_chart(fig2, use_container_width=True)
-else:
-    st.caption("Historical ONI file not found \u2014 showing forecast only.")
-
-if meta["skipped"]:
-    st.info(
-        f"**{season} {2026}** shown. Month(s) skipped for lack of input data: "
-        f"{', '.join(meta['skipped'])} "
-        f"(needs Pacific observations {meta['lead_months']} months ahead of each target)."
-    )
-
 # ======================================================================
 # Section 2 — South Asia anomaly maps
 # ======================================================================
-st.header(f"2 \u00b7 South Asia Impact Maps \u2014 {sel_month}")
+st.header(f"2 · South Asia Impact Maps — {sel_month}")
 
 lats, lons = maps["lats"], maps["lons"]
 is_std = layer.startswith("Ensemble spread")
@@ -245,90 +208,42 @@ is_std = layer.startswith("Ensemble spread")
 def make_map(field_mean, field_std, title, diverging_scale):
     arr = (field_std if is_std else field_mean)[mi]
     if is_std:
-        zmin, zmax, scale = 0.0, float(np.nanmax(field_std[mi])) or 1.0, SPREAD_SCALE
+        zmin, zmax, scale = 0.0, float(np.nanmax(field_std[mi])), "Viridis"
     else:
         v = float(np.nanmax(np.abs(field_mean[mi]))) or 1.0
         zmin, zmax, scale = -v, v, diverging_scale
     fig = go.Figure(go.Heatmap(
         z=arr, x=lons, y=lats, zmin=zmin, zmax=zmax,
-        colorscale=scale, colorbar=dict(title="\u03c3" if is_std else "anom"),
+        colorscale=scale, colorbar=dict(title="σ" if is_std else "anom"),
     ))
     fig.update_layout(
-        title=f"{title} \u2014 {'spread (std)' if is_std else 'mean anomaly'}",
-        xaxis_title="Longitude (\u00b0E)", yaxis_title="Latitude (\u00b0N)",
-        height=440, margin=dict(t=40, b=10), paper_bgcolor="rgba(0,0,0,0)",
+        title=f"{title} — {'spread (std)' if is_std else 'mean anomaly'}",
+        xaxis_title="Longitude (°E)", yaxis_title="Latitude (°N)",
+        height=460, margin=dict(t=40, b=10),
     )
+    fig.update_yaxes(scaleanchor=None)
     return fig
 
 
 m1, m2 = st.columns(2)
 m1.plotly_chart(make_map(maps["t2m_mean"], maps["t2m_std"],
-                         "2 m Temperature (t2m)", TEMP_SCALE),
+                         "2 m Temperature (t2m)", "RdBu_r"),
                 use_container_width=True)
 m2.plotly_chart(make_map(maps["tp_mean"], maps["tp_std"],
-                         "Total Precipitation (tp)", PRECIP_SCALE),
+                         "Total Precipitation (tp)", "BrBG"),
                 use_container_width=True)
 
 st.caption(
-    "Values are standardized anomalies (z-scores) vs. the 1980\u20132018 training climatology. "
-    "For the mean layer: t2m \u2014 orange = warmer, blue = cooler; tp \u2014 brown = drier, green = wetter. "
+    "Values are standardized anomalies (z-scores) vs. the 1980–2018 training climatology. "
+    "For the mean layer, red/brown = warmer/drier, blue/green = cooler/wetter. "
     "The spread (std) layer shows where the 5 ensemble members disagree most (forecast uncertainty)."
 )
 
 # ======================================================================
-# Section 3 — Regional climate risk & key insights
+# Section 3 — Downloads
 # ======================================================================
-st.header("3 \u00b7 Regional Climate Risk")
-
-t2m_sel = maps["t2m_mean"][mi]
-tp_sel = maps["tp_mean"][mi]
-
-risk_rows = []
-for name, box in COUNTRY_BOXES.items():
-    t_val = region_mean(t2m_sel, lats, lons, box)
-    p_val = region_mean(tp_sel, lats, lons, box)
-    lvl, clr = classify_risk(t_val, p_val)
-    risk_rows.append((name, lvl, clr, t_val, p_val))
-
-risk_cols = st.columns(len(risk_rows))
-for col, (name, lvl, clr, t_val, p_val) in zip(risk_cols, risk_rows):
-    col.markdown(
-        f"**{name}**<br>"
-        f"<span style='color:{clr};font-weight:700;font-size:1.15rem'>{lvl}</span><br>"
-        f"<span style='font-size:0.8rem;color:{NEUTRAL_GRY}'>t2m {t_val:+.2f}\u03c3 \u00b7 tp {p_val:+.2f}\u03c3</span>",
-        unsafe_allow_html=True,
-    )
-st.caption(
-    "Risk = max(|t2m anomaly|, |tp anomaly|) averaged inside an approximate rectangular "
-    "country bounding box (not exact political borders). HIGH \u2265 0.5\u03c3, MEDIUM \u2265 0.25\u03c3, else LOW."
-)
-
-st.subheader("Key insights")
-overall_t2m = float(np.nanmean(t2m_sel))
-overall_tp = float(np.nanmean(tp_sel))
-insights = []
-if overall_tp <= -0.25:
-    insights.append("Rainfall deficit expected across South Asia")
-elif overall_tp >= 0.25:
-    insights.append("Above-normal rainfall expected across South Asia")
-if overall_t2m >= 0.25:
-    insights.append("Above-normal temperatures likely")
-elif overall_t2m <= -0.25:
-    insights.append("Below-normal temperatures likely")
-if fc_mean[-1] > fc_mean[0] + 0.1:
-    insights.append("ENSO signal strengthening through the forecast window")
-elif fc_mean[-1] < fc_mean[0] - 0.1:
-    insights.append("ENSO signal weakening through the forecast window")
-if not insights:
-    insights.append("Conditions close to climatological normal.")
-for ins in insights:
-    st.markdown(f"- {ins}")
-
-# ======================================================================
-# Section 4 — Downloads
-# ======================================================================
-st.header("4 \u00b7 Data")
+st.header("3 · Data")
 d1, d2, d3 = st.columns(3)
-d1.download_button("\u2b07 ONI CSV", CSV.read_bytes(), "ensemble_oni_2026.csv", "text/csv")
-d2.download_button("\u2b07 Maps NPZ", NPZ.read_bytes(), "ensemble_maps_2026.npz")
-d3.download_button("\u2b07 Metadata JSON", META.read_bytes(), "forecast_meta.json", "application/json")
+d1.download_button("⬇ ONI CSV", CSV.read_bytes(), "ensemble_oni_2026.csv", "text/csv")
+d2.download_button("⬇ Maps NPZ", NPZ.read_bytes(), "ensemble_maps_2026.npz")
+d3.download_button("⬇ Metadata JSON", META.read_bytes(), "forecast_meta.json", "application/json")
