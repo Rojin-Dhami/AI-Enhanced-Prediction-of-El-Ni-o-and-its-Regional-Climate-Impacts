@@ -40,7 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-```gitignore
 # =========================
 # Dataset / Data Files
 # =========================
@@ -50,6 +49,9 @@ next-env.d.ts
 
 # Ignore CSV files anywhere in the project
 *.csv
+
+# ...except the forecast dashboard's own copy, needed at runtime/deploy
+!public/forecast/*.csv
 
 # Ignore large data formats
 *.parquet
