@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Verified ENSO forecasting and South Asia climate prediction results.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"

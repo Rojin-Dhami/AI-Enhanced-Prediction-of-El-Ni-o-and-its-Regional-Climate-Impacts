@@ -1,4 +1,4 @@
-export type ModelId = | "cnn-tcn" | "xgboost-method-1" | "xgboost-method-2";
+export type ModelId = "cnn-tcn";
 
 export interface ModelInfo {
     id: ModelId;
@@ -19,28 +19,6 @@ export const models: ModelInfo[] = [
             "training-curve",
             "temperature-anomaly",
             "precipitation-anomaly",
-            "performance",
-        ],
-    },
-    {
-        id: "xgboost-method-1",
-        name: "XGBoost Method 1",
-        shortName: "XGBoost M1",
-        description: "MIFS-selected feature baseline for Niño 3.4 forecasting.",
-        outputs: [
-            "enso-forecast",
-            "feature-selection",
-            "feature-importance",
-            "performance",
-        ],
-    },
-    {
-        id: "xgboost-method-2",
-        name: "XGBoost Method 2",
-        shortName: "XGBoost M2",
-        description: "Broad approximate feature-selection XGBoost baseline.",
-        outputs: [
-            "feature-selection",
             "performance",
         ],
     },
