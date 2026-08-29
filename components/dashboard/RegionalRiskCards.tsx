@@ -22,11 +22,11 @@ export default function RegionalRiskCards({ risks }: { risks: CountryRisk[] }) {
           <div className="mt-3 space-y-1.5 text-sm text-slate-400">
             <p className="flex items-center gap-2">
               <Thermometer size={14} className="text-slate-500" />
-              Temperature: <span className="font-medium text-slate-200">{`${r.t2mZ >= 0 ? "+" : ""}${r.t2mZ.toFixed(2)}\u03c3`}</span>
+              Temperature: <span className="font-medium text-slate-200">{`${r.t2mZ >= 0 ? "+" : ""}${r.t2mZ.toFixed(2)}σ`}</span>
             </p>
             <p className="flex items-center gap-2">
               <CloudRain size={14} className="text-slate-500" />
-              Precipitation: <span className="font-medium text-slate-200">{`${r.tpZ >= 0 ? "+" : ""}${r.tpZ.toFixed(2)}\u03c3`}</span>
+              Precipitation: <span className="font-medium text-slate-200">{`${r.tpZ >= 0 ? "+" : ""}${r.tpZ.toFixed(2)}σ`}</span>
             </p>
           </div>
           <p className="mt-2 text-[11px] leading-4 text-slate-600">Approximate regional average, not a political boundary.</p>
